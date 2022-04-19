@@ -10,18 +10,19 @@
     <p>Ajax대신 Fetch API를 사용하여 웹에 접근</p>
     <p>콜백으로 비동기접근이 아닌 promise와 await/async로 비동기접근</p>
 
+    <button id="btnjson">출력</button>
+    <p id="printjson"></p>
+
     <script>
         /*fetch는 데이터의 CRUD 작업을 할수있게 웹에 접근할수있다
         http request, Response, POST, GET과 같은 메소드 작업가능
         반환값이 promise 객체로 반환*/
 
-        doFetch();
-
         fetch('./data.txt')
         //fetch 자체는 동기식 하지만 then이 붙는순간 비동기로 처리
         .then(pResponse => {
             //처음에 들어오는 반환 값 : pResponse 값
-            console.log(pResponse);
+            console.log('txt');
             return pResponse.text();
         })
         .then(pJSON => console.log(pJSON));
@@ -29,10 +30,10 @@
         fetch('./data.json')
         .then(pResponse => {
             //처음에 들어오는 반환 값 : pResponse 값
-            console.log(pResponse);
-            return pResponse.text();
+            console.log('json');
+            return pResponse.json();
         })
-        .then(pJSON => console.log(pJSON));
+        .then(pJSON => console.log(pJSON.memo));
         //다음을 return 해준 값(여기서는 pResponse.text())
         //then을 이용해서 값을 받아올때까지 기다린다.
 
@@ -43,9 +44,14 @@
         async function doFetch() {
             const response = await fetch('./data.json');
             const data = await response.json();
-            const memo = data.memo;
-            console.log(memo);
+            const print = document.querySelector("#printjson");
+            print.innerHTML = data.memo;
+            console.log(data.memo);
         }
+
+        const btn = document.querySelector("#btnjson");
+        btn.addEventListener("click", doFetch);
+
     </script>
 </body>
 </html>
